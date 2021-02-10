@@ -14,6 +14,8 @@ import { User } from './user/entities/user.entity';
 import { JwtMiddleware } from './jwt/jwt.middleware';
 import { UserModule } from './user/user.module';
 import { HtsModule } from './hts/hts.module';
+import { MusicModule } from './music/music.module';
+import { Music } from './music/entities/music.entity';
 
 @Module({
   imports: [
@@ -34,7 +36,7 @@ import { HtsModule } from './hts/hts.module';
       database: process.env.DATABASE_NAME,
       synchronize: true,
       logging: true,
-      entities: [User],
+      entities: [User, Music],
     }),
     AuthModule,
     JwtModule.forRoot({
@@ -46,6 +48,7 @@ import { HtsModule } from './hts/hts.module';
       key: process.env.JWT_PRIVATE_KEY,
     }),
     UserModule,
+    MusicModule,
   ],
   controllers: [],
   providers: [],

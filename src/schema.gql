@@ -33,14 +33,61 @@ type UserProfileOutput {
   user: User
 }
 
+type Music {
+  id: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  coverImage: String!
+  sourceUrl: String!
+  artist: [String!]!
+  composer: [String!]
+  arranger: [String!]
+  lyricist: [String!]
+  copyrightPeriod: String
+  copyrightTrust: String
+  representativeTrustee: String
+  caution: String
+}
+
+type CreateMusicOutput {
+  error: String
+  ok: Boolean!
+}
+
+type GetAllMusicsOutput {
+  error: String
+  ok: Boolean!
+  musics: [Music!]
+}
+
+type GetMusicOutput {
+  error: String
+  ok: Boolean!
+  music: Music
+}
+
+type UpdateMusicOutput {
+  error: String
+  ok: Boolean!
+}
+
 type Query {
   me: User!
   userProfile(id: Float!): UserProfileOutput!
+  getAllMusics: GetAllMusicsOutput!
+  getMusic(input: GetMusicInput!): GetMusicOutput!
+}
+
+input GetMusicInput {
+  id: Float!
 }
 
 type Mutation {
   login(input: LoginInput!): LoginOutput!
   createAccount(input: CreateAccountInput!): CreateAccountOutput!
+  createMusic(input: CreateMusicInput!): CreateMusicOutput!
+  updateMusic(input: UpdateMusicInput!): UpdateMusicOutput!
 }
 
 input LoginInput {
@@ -51,4 +98,33 @@ input LoginInput {
 input CreateAccountInput {
   email: String!
   password: String!
+}
+
+input CreateMusicInput {
+  title: String!
+  coverImage: String!
+  sourceUrl: String!
+  artist: [String!]!
+  composer: [String!]
+  arranger: [String!]
+  lyricist: [String!]
+  copyrightPeriod: String
+  copyrightTrust: String
+  representativeTrustee: String
+  caution: String
+}
+
+input UpdateMusicInput {
+  title: String
+  coverImage: String
+  sourceUrl: String
+  artist: [String!]
+  composer: [String!]
+  arranger: [String!]
+  lyricist: [String!]
+  copyrightPeriod: String
+  copyrightTrust: String
+  representativeTrustee: String
+  caution: String
+  id: Float!
 }
