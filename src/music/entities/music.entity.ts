@@ -73,7 +73,6 @@ export class Music extends CoreEntity {
 
   @Column({ nullable: true })
   @Field(is => Date, { nullable: true })
-  @IsISO8601()
   @IsOptional()
   publishDate?: Date;
 
