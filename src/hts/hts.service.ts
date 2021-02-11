@@ -217,6 +217,30 @@ export class HtsService {
     }
   }
 
+  async transferHbarToUser(accountId: string, amount: number) {
+    try {
+      const tx = new TransferTransaction()
+        .addHbarTransfer(accountId, Hbar.fromTinybars(amount))
+        .addHbarTransfer(this.options.accountId, Hbar.fromTinybars(amount * -1))
+        .freezeWith(this.htsClient);
+
+      const signTx = await tx.sign(
+        PrivateKey.fromString(this.options.privateKey),
+      );
+      const signTxRes = await signTx.execute(this.htsClient);
+
+      await signTxRes.getReceipt(this.htsClient);
+      return {
+        ok: true,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error,
+      };
+    }
+  }
+
   async getAccountBalance(accountId: string): Promise<GetAccountBalanceOutput> {
     try {
       const balance = await new AccountBalanceQuery()

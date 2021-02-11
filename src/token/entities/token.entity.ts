@@ -24,6 +24,9 @@ export class TokenEarningLog {
 
   @Field(is => Number)
   copyrightFee: number;
+
+  @Field(is => Boolean)
+  checked: boolean;
 }
 
 @InputType('TokenInputType', { isAbstract: true })

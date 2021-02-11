@@ -116,6 +116,7 @@ export class TokenService {
       const newLog = {
         date: new Date(),
         copyrightFee: randomEarning,
+        checked: false,
       };
 
       const logs = token.logs;
@@ -136,6 +137,23 @@ export class TokenService {
       const newPrice = Math.floor(recentPrice * randomRatio);
 
       token.recentPrice = newPrice;
+
+      await this.tokenRepository.save(token);
+    }
+  }
+
+  async checkAllTokenLogs() {
+    const openedTokens = await this.tokenRepository.find({
+      status: TokenStatus.Open,
+    });
+
+    for (const token of openedTokens) {
+      const logs = token.logs;
+      for (const log of logs) {
+        log.checked = true;
+      }
+
+      token.logs = logs;
 
       await this.tokenRepository.save(token);
     }

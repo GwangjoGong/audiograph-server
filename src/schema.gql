@@ -5,6 +5,7 @@
 type TokenEarningLog {
   date: DateTime!
   copyrightFee: Float!
+  checked: Boolean!
 }
 
 """
@@ -241,6 +242,7 @@ input CreateTokenInput {
 input TokenEarningLogInputType {
   date: DateTime!
   copyrightFee: Float!
+  checked: Boolean!
 }
 
 input UpdateTokenInput {

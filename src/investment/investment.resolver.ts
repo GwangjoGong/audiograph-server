@@ -9,6 +9,7 @@ import {
 } from './dtos/create-investment.dto';
 import { Investment } from './entities/investment.entity';
 import { InvestmentService } from './investment.service';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Resolver(of => Investment)
 export class InvestmentResolver {
@@ -27,5 +28,10 @@ export class InvestmentResolver {
   @Query(returns => [Investment])
   getMyInvestments(@AuthUser() user: User) {
     return user.investments;
+  }
+
+  @Cron(CronExpression.EVERY_WEEK)
+  checkInvestments() {
+    this.investmentService.checkInvestment();
   }
 }

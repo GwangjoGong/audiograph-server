@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { HtsService } from '../hts/hts.service';
 import { MusicService } from '../music/music.service';
+import { TokenStatus } from '../token/entities/token.entity';
 import { TokenService } from '../token/token.service';
 import { User } from '../user/entities/user.entity';
 import {
@@ -104,6 +105,34 @@ export class InvestmentService {
         ok: false,
         error: 'Cannot create investment',
       };
+    }
+  }
+
+  async checkInvestment() {
+    try {
+      const investments = await this.investmentRepository.find();
+      const targetInvestments = investments.filter(
+        i => i.music.token.status === TokenStatus.Open,
+      );
+
+      for (const investment of targetInvestments) {
+        const holder = investment.user;
+        const token = investment.music.token;
+        const uncheckedLogs = token.logs.filter(l => !l.checked);
+        const totalEarnings = uncheckedLogs.reduce(
+          (acc, val) => acc + val.copyrightFee,
+          0,
+        );
+
+        await this.htsService.transferHbarToUser(
+          holder.htsAccountId,
+          totalEarnings,
+        );
+      }
+
+      await this.tokenService.checkAllTokenLogs();
+    } catch (error) {
+      console.error(error);
     }
   }
 }
