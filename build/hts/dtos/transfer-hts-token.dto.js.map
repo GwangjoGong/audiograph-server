@@ -1,0 +1,1 @@
+{"version":3,"file":"transfer-hts-token.dto.js","sourceRoot":"","sources":["../../../src/hts/dtos/transfer-hts-token.dto.ts"],"names":[],"mappings":";;;;;;;;;AAAA,6CAA6C;AAC7C,6DAA0D;AAG1D,IAAa,sBAAsB,GAAnC,MAAa,sBAAuB,SAAQ,uBAAU;CAAG,CAAA;AAA5C,sBAAsB;IADlC,oBAAU,EAAE;GACA,sBAAsB,CAAsB;AAA5C,wDAAsB"}
