@@ -44,8 +44,7 @@ export class UserService {
       });
       if (existingUser) {
         return {
-          ok: false,
-          error: 'Account already exists',
+          ok: true,
         };
       }
 
