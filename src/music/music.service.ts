@@ -6,21 +6,43 @@ import { CreateMusicInput, CreateMusicOutput } from './dtos/create-music.dto';
 import { UpdateMusicInput, UpdateMusicOutput } from './dtos/update-music.dto';
 import { GetMusicInput, GetMusicOutput } from './dtos/get-music.dto';
 import { GetAllMusicsOutput } from './dtos/get-all-musics.dto';
+import { TokenService } from '../token/token.service';
+import { TokenStatus } from '../token/entities/token.entity';
 
 @Injectable()
 export class MusicService {
   constructor(
     @InjectRepository(Music)
     private readonly musicRepository: Repository<Music>,
+    private readonly tokenService: TokenService,
   ) {}
 
   async createMusic(
     createMusicInput: CreateMusicInput,
   ): Promise<CreateMusicOutput> {
     try {
+      const { ok, error, token } = await this.tokenService.createToken({
+        title: createMusicInput.title,
+        initialPrice: createMusicInput.initialPrice,
+        totalStock: createMusicInput.totalStock,
+        status: TokenStatus.Investing,
+        logs: [],
+      });
+
+      if (!ok) {
+        return {
+          ok,
+          error,
+        };
+      }
+
       await this.musicRepository.save(
-        this.musicRepository.create(createMusicInput),
+        this.musicRepository.create({
+          token,
+          ...createMusicInput,
+        }),
       );
+
       return {
         ok: true,
       };

@@ -21,7 +21,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@hashgraph/sdk": "^1.4.6",
+    "@hashgraph/proto": "^1.0.19",
+    "@hashgraph/sdk": "2.0.13",
     "@nestjs/common": "^7.0.0",
     "@nestjs/config": "^0.6.0",
     "@nestjs/core": "^7.0.0",

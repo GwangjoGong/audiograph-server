@@ -43,6 +43,7 @@ export class UserService {
         ok,
         error,
         htsAccountId,
+        privateKey,
       } = await this.htsService.createHtsAccount();
       if (!ok) {
         return {
@@ -55,6 +56,7 @@ export class UserService {
         this.users.create({
           ...createAccountInput,
           htsAccountId,
+          privateKey,
         }),
       );
       return {

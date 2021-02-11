@@ -2,6 +2,65 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type TokenDailyLog {
+  date: DateTime!
+  diff: Float!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Token {
+  id: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  htsTokenId: String!
+  initialPrice: Float!
+  recentPrice: Float
+  stock: Float
+  totalStock: Float!
+  status: TokenStatus!
+  logs: [TokenDailyLog!]!
+}
+
+enum TokenStatus {
+  Investing
+  Open
+  Close
+}
+
+type Music {
+  id: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  coverImage: String!
+  sourceUrl: String!
+  artist: [String!]!
+  composer: [String!]
+  arranger: [String!]
+  lyricist: [String!]
+  copyrightPeriod: String
+  copyrightTrust: String
+  representativeTrustee: String
+  caution: String
+  publishDate: DateTime
+  token: Token!
+  investments: [Investment!]!
+}
+
+type Investment {
+  id: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  amount: Float!
+  price: Float!
+  user: User!
+  music: Music!
+}
+
 type User {
   id: Float!
   createdAt: DateTime!
@@ -9,12 +68,21 @@ type User {
   email: String!
   password: String!
   htsAccountId: String!
+  privateKey: String!
+  investments: [Investment!]!
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
+type GetAccountBalanceOutput {
+  error: String
+  ok: Boolean!
+  accountBalance: Float
+}
+
+type GetTokenBalanceOutput {
+  error: String
+  ok: Boolean!
+  tokenBalance: String
+}
 
 type CreateAccountOutput {
   error: String
@@ -33,21 +101,27 @@ type UserProfileOutput {
   user: User
 }
 
-type Music {
-  id: Float!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  title: String!
-  coverImage: String!
-  sourceUrl: String!
-  artist: [String!]!
-  composer: [String!]
-  arranger: [String!]
-  lyricist: [String!]
-  copyrightPeriod: String
-  copyrightTrust: String
-  representativeTrustee: String
-  caution: String
+type CreateTokenOutput {
+  error: String
+  ok: Boolean!
+  token: Token
+}
+
+type GetAllTokensOutput {
+  error: String
+  ok: Boolean!
+  tokens: [Token!]
+}
+
+type GetTokenOutput {
+  error: String
+  ok: Boolean!
+  token: Token
+}
+
+type UpdateTokenOutput {
+  error: String
+  ok: Boolean!
 }
 
 type CreateMusicOutput {
@@ -72,14 +146,28 @@ type UpdateMusicOutput {
   ok: Boolean!
 }
 
+type CreateInvestmentOutput {
+  error: String
+  ok: Boolean!
+}
+
 type Query {
   me: User!
+  getAccountBalance: GetAccountBalanceOutput!
+  getTokenBalance: GetTokenBalanceOutput!
   userProfile(id: Float!): UserProfileOutput!
   getAllMusics: GetAllMusicsOutput!
   getMusic(input: GetMusicInput!): GetMusicOutput!
+  getAllTokens: GetAllTokensOutput!
+  getToken(input: GetTokenInput!): GetTokenOutput!
+  getMyInvestments: [Investment!]!
 }
 
 input GetMusicInput {
+  id: Float!
+}
+
+input GetTokenInput {
   id: Float!
 }
 
@@ -88,6 +176,9 @@ type Mutation {
   createAccount(input: CreateAccountInput!): CreateAccountOutput!
   createMusic(input: CreateMusicInput!): CreateMusicOutput!
   updateMusic(input: UpdateMusicInput!): UpdateMusicOutput!
+  createToken(input: CreateTokenInput!): CreateTokenOutput!
+  updateToken(input: UpdateTokenInput!): UpdateTokenOutput!
+  createInvestment(input: CreateInvestmentInput!): CreateInvestmentOutput!
 }
 
 input LoginInput {
@@ -112,6 +203,9 @@ input CreateMusicInput {
   copyrightTrust: String
   representativeTrustee: String
   caution: String
+  publishDate: DateTime
+  initialPrice: Float!
+  totalStock: Float!
 }
 
 input UpdateMusicInput {
@@ -126,5 +220,39 @@ input UpdateMusicInput {
   copyrightTrust: String
   representativeTrustee: String
   caution: String
+  publishDate: DateTime
+  initialPrice: Float
+  totalStock: Float
   id: Float!
+}
+
+input CreateTokenInput {
+  initialPrice: Float!
+  recentPrice: Float
+  stock: Float
+  totalStock: Float!
+  status: TokenStatus = Investing
+  logs: [TokenDailyLogInputType!] = []
+  title: String!
+}
+
+input TokenDailyLogInputType {
+  date: DateTime!
+  diff: Float!
+}
+
+input UpdateTokenInput {
+  initialPrice: Float
+  recentPrice: Float
+  stock: Float
+  totalStock: Float
+  status: TokenStatus = Investing
+  logs: [TokenDailyLogInputType!] = []
+  title: String
+  tokenId: Float!
+}
+
+input CreateInvestmentInput {
+  amount: Float!
+  musicId: Float!
 }

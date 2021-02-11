@@ -16,6 +16,10 @@ import { UserModule } from './user/user.module';
 import { HtsModule } from './hts/hts.module';
 import { MusicModule } from './music/music.module';
 import { Music } from './music/entities/music.entity';
+import { TokenModule } from './token/token.module';
+import { InvestmentModule } from './investment/investment.module';
+import { Investment } from './investment/entities/investment.entity';
+import { Token } from './token/entities/token.entity';
 
 @Module({
   imports: [
@@ -36,7 +40,7 @@ import { Music } from './music/entities/music.entity';
       database: process.env.DATABASE_NAME,
       synchronize: true,
       logging: true,
-      entities: [User, Music],
+      entities: [User, Music, Token, Investment],
     }),
     AuthModule,
     JwtModule.forRoot({
@@ -45,10 +49,14 @@ import { Music } from './music/entities/music.entity';
     HtsModule.forRoot({
       privateKey: process.env.HTS_PRIVATE_KEY,
       accountId: process.env.HTS_ACCOUNT_ID,
+      publicKey: process.env.HTS_PUBLIC_KEY,
       key: process.env.JWT_PRIVATE_KEY,
+      tbarTokenId: process.env.HTS_TBAR_TOKEN_ID,
     }),
     UserModule,
     MusicModule,
+    TokenModule,
+    InvestmentModule,
   ],
   controllers: [],
   providers: [],

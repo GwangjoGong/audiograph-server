@@ -1,9 +1,10 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { CoreEntity } from 'src/common/entities/core.entity';
-import { BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { InternalServerErrorException } from '@nestjs/common';
 import { IsEmail, IsString } from 'class-validator';
+import { Investment } from '../../investment/entities/investment.entity';
 
 @InputType('UserInputType', { isAbstract: true })
 @ObjectType()
@@ -23,6 +24,11 @@ export class User extends CoreEntity {
   @Field(is => String)
   @IsString()
   htsAccountId: string;
+
+  @Column()
+  @Field(is => String)
+  @IsString()
+  privateKey: string;
 
   @BeforeInsert()
   @BeforeUpdate()
@@ -45,4 +51,12 @@ export class User extends CoreEntity {
       throw new InternalServerErrorException();
     }
   }
+
+  @OneToMany(
+    to => Investment,
+    investment => investment.user,
+    { eager: true },
+  )
+  @Field(is => [Investment])
+  investments: Investment[];
 }

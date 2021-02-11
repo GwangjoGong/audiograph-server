@@ -3,6 +3,9 @@ import { Args, Mutation, Query } from '@nestjs/graphql';
 import { Resolver } from '@nestjs/graphql';
 import { AuthUser } from '../auth/auth-user.decorator';
 import { AuthGuard } from '../auth/auth.guard';
+import { GetAccountBalanceOutput } from '../hts/dtos/get-account-balance.dto';
+import { GetTokenBalanceOutput } from '../hts/dtos/get-token-balance.dto';
+import { HtsService } from '../hts/hts.service';
 import {
   CreateAccountInput,
   CreateAccountOutput,
@@ -14,12 +17,25 @@ import { UserService } from './user.service';
 
 @Resolver(of => User)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly htsService: HtsService,
+  ) {}
 
   @UseGuards(AuthGuard)
   @Query(returns => User)
   me(@AuthUser() user: User) {
     return user;
+  }
+
+  @Query(returns => GetAccountBalanceOutput)
+  getAccountBalance(@AuthUser() user: User) {
+    return this.htsService.getAccountBalance(user.htsAccountId);
+  }
+
+  @Query(returns => GetTokenBalanceOutput)
+  getTokenBalance(@AuthUser() user: User) {
+    return this.htsService.getTokenBalance(user.htsAccountId);
   }
 
   @UseGuards(AuthGuard)

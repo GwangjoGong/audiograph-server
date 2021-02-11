@@ -1,7 +1,9 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { CoreEntity } from 'src/common/entities/core.entity';
-import { Column, Entity } from 'typeorm';
-import { IsArray, IsOptional, IsString } from 'class-validator';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { IsArray, IsISO8601, IsOptional, IsString } from 'class-validator';
+import { Token } from '../../token/entities/token.entity';
+import { Investment } from '../../investment/entities/investment.entity';
 
 @InputType('MusicInputType', { isAbstract: true })
 @ObjectType()
@@ -68,4 +70,22 @@ export class Music extends CoreEntity {
   @IsString()
   @IsOptional()
   caution?: string;
+
+  @Column({ nullable: true })
+  @Field(is => Date, { nullable: true })
+  @IsISO8601()
+  @IsOptional()
+  publishDate?: Date;
+
+  @OneToOne(to => Token, { eager: true, onDelete: 'CASCADE' })
+  @JoinColumn()
+  @Field(is => Token)
+  token: Token;
+
+  @OneToMany(
+    to => Investment,
+    investment => investment.music,
+  )
+  @Field(is => [Investment], { defaultValue: [] })
+  investments: Investment[];
 }
