@@ -16,14 +16,14 @@ export enum TokenStatus {
 
 registerEnumType(TokenStatus, { name: 'TokenStatus' });
 
-@InputType('TokenDailyLogInputType', { isAbstract: true })
+@InputType('TokenEarningLogInputType', { isAbstract: true })
 @ObjectType()
-export class TokenDailyLog {
+export class TokenEarningLog {
   @Field(is => Date)
   date: Date;
 
   @Field(is => Number)
-  diff: number;
+  copyrightFee: number;
 }
 
 @InputType('TokenInputType', { isAbstract: true })
@@ -62,7 +62,7 @@ export class Token extends CoreEntity {
   @IsEnum(TokenStatus)
   status: TokenStatus;
 
-  @Field(is => [TokenDailyLog], { defaultValue: [] })
+  @Field(is => [TokenEarningLog], { defaultValue: [] })
   @Column({ type: 'json', default: [] })
-  logs: TokenDailyLog[];
+  logs: TokenEarningLog[];
 }
