@@ -8,7 +8,7 @@ import { CreateTokenInput, CreateTokenOutput } from './dtos/create-token.dto';
 import { GetAllTokensOutput } from './dtos/get-all-tokens.dto';
 import { GetTokenInput, GetTokenOutput } from './dtos/get-token.dto';
 import { UpdateTokenInput, UpdateTokenOutput } from './dtos/update-token.dto';
-import { Token } from './entities/token.entity';
+import { Token, TokenStatus } from './entities/token.entity';
 
 @Injectable()
 export class TokenService {
@@ -103,6 +103,41 @@ export class TokenService {
         ok: false,
         error: 'Cannot update token',
       };
+    }
+  }
+
+  async makeEarning() {
+    const openedTokens = await this.tokenRepository.find({
+      status: TokenStatus.Open,
+    });
+
+    for (const token of openedTokens) {
+      const randomEarning = 0.01 + Math.floor(Math.random() * 10) / 100;
+      const newLog = {
+        date: new Date(),
+        copyrightFee: randomEarning,
+      };
+
+      const logs = token.logs;
+      token.logs = [...logs, newLog];
+
+      await this.tokenRepository.save(token);
+    }
+  }
+
+  async changePrice() {
+    const openedTokens = await this.tokenRepository.find({
+      status: TokenStatus.Open,
+    });
+
+    for (const token of openedTokens) {
+      const recentPrice = token.recentPrice;
+      const randomRatio = (-10 + Math.floor(Math.random() * 20)) / 1000;
+      const newPrice = Math.floor(recentPrice * randomRatio);
+
+      token.recentPrice = newPrice;
+
+      await this.tokenRepository.save(token);
     }
   }
 }

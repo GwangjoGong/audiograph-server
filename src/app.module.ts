@@ -20,6 +20,7 @@ import { TokenModule } from './token/token.module';
 import { InvestmentModule } from './investment/investment.module';
 import { Investment } from './investment/entities/investment.entity';
 import { Token } from './token/entities/token.entity';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { Token } from './token/entities/token.entity';
       logging: true,
       entities: [User, Music, Token, Investment],
     }),
+    ScheduleModule.forRoot(),
     AuthModule,
     JwtModule.forRoot({
       privateKey: process.env.JWT_PRIVATE_KEY,

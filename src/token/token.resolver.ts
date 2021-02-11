@@ -7,6 +7,7 @@ import { GetTokenInput, GetTokenOutput } from './dtos/get-token.dto';
 import { UpdateTokenInput, UpdateTokenOutput } from './dtos/update-token.dto';
 import { Token } from './entities/token.entity';
 import { TokenService } from './token.service';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Resolver(of => Token)
 export class TokenResolver {
@@ -34,5 +35,15 @@ export class TokenResolver {
   @Mutation(returns => UpdateTokenOutput)
   updateToken(@Args('input') updateTokenInput: UpdateTokenInput) {
     return this.tokenSerivce.updateToken(updateTokenInput);
+  }
+
+  @Cron(CronExpression.EVERY_DAY_AT_1PM)
+  makeEarning() {
+    this.tokenSerivce.makeEarning();
+  }
+
+  @Cron(CronExpression.EVERY_10_MINUTES)
+  changePrice() {
+    this.tokenSerivce.changePrice();
   }
 }

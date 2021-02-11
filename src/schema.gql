@@ -2,9 +2,9 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type TokenDailyLog {
+type TokenEarningLog {
   date: DateTime!
-  diff: Float!
+  copyrightFee: Float!
 }
 
 """
@@ -22,7 +22,7 @@ type Token {
   stock: Float
   totalStock: Float!
   status: TokenStatus!
-  logs: [TokenDailyLog!]!
+  logs: [TokenEarningLog!]!
 }
 
 enum TokenStatus {
@@ -234,13 +234,13 @@ input CreateTokenInput {
   stock: Float
   totalStock: Float!
   status: TokenStatus = Investing
-  logs: [TokenDailyLogInputType!] = []
+  logs: [TokenEarningLogInputType!] = []
   title: String!
 }
 
-input TokenDailyLogInputType {
+input TokenEarningLogInputType {
   date: DateTime!
-  diff: Float!
+  copyrightFee: Float!
 }
 
 input UpdateTokenInput {
@@ -249,7 +249,7 @@ input UpdateTokenInput {
   stock: Float
   totalStock: Float
   status: TokenStatus = Investing
-  logs: [TokenDailyLogInputType!] = []
+  logs: [TokenEarningLogInputType!] = []
   title: String
   tokenId: Float!
 }
