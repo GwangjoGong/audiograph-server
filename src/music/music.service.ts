@@ -107,4 +107,46 @@ export class MusicService {
       };
     }
   }
+
+  async getTrendingMusics(): Promise<GetAllMusicsOutput> {
+    try {
+      const musics = await this.musicRepository.find({
+        relations: ['token'],
+      });
+
+      const sorted = musics.sort((m1, m2) => m1.token.stock - m2.token.stock);
+
+      return {
+        ok: true,
+        musics: sorted.slice(0, 3),
+      };
+    } catch {
+      return {
+        ok: false,
+        error: 'Cannot get all musics',
+      };
+    }
+  }
+
+  async getRecentMusics(): Promise<GetAllMusicsOutput> {
+    try {
+      const musics = await this.musicRepository.find({
+        relations: ['token'],
+        order: {
+          createdAt: 'DESC',
+        },
+        take: 3,
+      });
+
+      return {
+        ok: true,
+        musics,
+      };
+    } catch {
+      return {
+        ok: false,
+        error: 'Cannot get all musics',
+      };
+    }
+  }
 }

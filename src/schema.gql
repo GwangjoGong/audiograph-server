@@ -157,6 +157,8 @@ type Query {
   getTokenBalance: GetTokenBalanceOutput!
   userProfile(id: Float!): UserProfileOutput!
   getAllMusics: GetAllMusicsOutput!
+  getTrendingMusics: GetAllMusicsOutput!
+  getRecentMusics: GetAllMusicsOutput!
   getMusic(input: GetMusicInput!): GetMusicOutput!
   getAllTokens: GetAllTokensOutput!
   getToken(input: GetTokenInput!): GetTokenOutput!

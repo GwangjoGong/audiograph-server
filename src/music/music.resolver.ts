@@ -19,6 +19,18 @@ export class MusicResolver {
   }
 
   @UseGuards(AuthGuard)
+  @Query(returns => GetAllMusicsOutput)
+  getTrendingMusics() {
+    return this.musicService.getTrendingMusics();
+  }
+
+  @UseGuards(AuthGuard)
+  @Query(returns => GetAllMusicsOutput)
+  getRecentMusics() {
+    return this.musicService.getRecentMusics();
+  }
+
+  @UseGuards(AuthGuard)
   @Query(returns => GetMusicOutput)
   getMusic(@Args('input') getMusicInput: GetMusicInput) {
     return this.musicService.getMusic(getMusicInput);
