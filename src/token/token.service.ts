@@ -91,14 +91,14 @@ export class TokenService {
     updateTokenInput: UpdateTokenInput,
   ): Promise<UpdateTokenOutput> {
     try {
-      await this.tokenRepository.update(
-        { id: updateTokenInput.tokenId },
-        { ...updateTokenInput },
-      );
+      const id = updateTokenInput.tokenId;
+      delete updateTokenInput.tokenId;
+      await this.tokenRepository.update({ id }, { ...updateTokenInput });
       return {
         ok: true,
       };
-    } catch {
+    } catch (error) {
+      console.log(error);
       return {
         ok: false,
         error: 'Cannot update token',
