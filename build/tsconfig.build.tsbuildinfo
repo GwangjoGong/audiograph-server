@@ -5601,8 +5601,8 @@
         "affectsGlobalScope": false
       },
       "../build/token/dtos/create-token.dto.d.ts": {
-        "version": "04672c61fa38daa8554683a0bf568498ba38320444caf9d74d3105395fadfd78",
-        "signature": "04672c61fa38daa8554683a0bf568498ba38320444caf9d74d3105395fadfd78",
+        "version": "553db959b5706bfee91305010fa586240f45cdba4e02c91a20f4bbfea8be3787",
+        "signature": "553db959b5706bfee91305010fa586240f45cdba4e02c91a20f4bbfea8be3787",
         "affectsGlobalScope": false
       },
       "../build/token/dtos/get-all-tokens.dto.d.ts": {
@@ -7166,7 +7166,7 @@
         "affectsGlobalScope": false
       },
       "../src/user/user.service.ts": {
-        "version": "36e956cf2377f3754477058b6940534febb75d1e5eba8a53c46a656b2ece8736",
+        "version": "f199862b1ccc482d3ce06f41130da869b15ffc7f569344a947b81357cfbe7ab3",
         "signature": "e7935bde57c974569718222bb1f8dc37d99998e88c3343a74659269a82986d00",
         "affectsGlobalScope": false
       },
