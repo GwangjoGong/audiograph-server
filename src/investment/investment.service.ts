@@ -44,17 +44,24 @@ export class InvestmentService {
         };
       }
 
-      const associateTokenResult = await this.htsService.assoicateHtsToken(
-        music.token.htsTokenId,
-        user.htsAccountId,
-        user.privateKey,
+      const userInvestments = user.investments;
+      const existingInvestment = userInvestments.find(
+        i => i.music.id === music.id,
       );
 
-      if (!associateTokenResult.ok) {
-        return {
-          ok: false,
-          error: associateTokenResult.error,
-        };
+      if (!existingInvestment) {
+        const associateTokenResult = await this.htsService.assoicateHtsToken(
+          music.token.htsTokenId,
+          user.htsAccountId,
+          user.privateKey,
+        );
+
+        if (!associateTokenResult.ok) {
+          return {
+            ok: false,
+            error: associateTokenResult.error,
+          };
+        }
       }
 
       const transferTokenResult = await this.htsService.transferHtsToken(
@@ -81,14 +88,19 @@ export class InvestmentService {
         };
       }
 
-      await this.investmentRepository.save(
-        this.investmentRepository.create({
-          user,
-          music,
-          amount: createInvestmentInput.amount,
-          price: music.token.initialPrice,
-        }),
-      );
+      if (existingInvestment) {
+        existingInvestment.amount += createInvestmentInput.amount;
+        await this.investmentRepository.save(existingInvestment);
+      } else {
+        await this.investmentRepository.save(
+          this.investmentRepository.create({
+            user,
+            music,
+            amount: createInvestmentInput.amount,
+            price: music.token.initialPrice,
+          }),
+        );
+      }
 
       const leftStock = music.token.stock - createInvestmentInput.amount;
 
