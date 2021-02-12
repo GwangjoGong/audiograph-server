@@ -7316,7 +7316,7 @@
         "affectsGlobalScope": false
       },
       "../src/music/music.service.ts": {
-        "version": "8d912ae463378e5e8e27909f196d6e91bc85aa2571a46c3d26d8cd5855aa8389",
+        "version": "cc24deec60711d8a894f3a90c66260e4ca174b2059ef3425d0862b12255fab28",
         "signature": "9ee78b4e819d9a53d9628d04e23dfa70c624725d300e2e7917417a06a63a4a20",
         "affectsGlobalScope": false
       },
@@ -7336,7 +7336,7 @@
         "affectsGlobalScope": false
       },
       "../src/investment/investment.service.ts": {
-        "version": "b31626d7c9f260d6a8efdf7ab1b65bd0925a35500ac8a9c78bc8fd865feed52e",
+        "version": "135957f43957846101da810d4795550dd4a337284f586112c7a7700fea13a13b",
         "signature": "3a2507c13feb6eb075c7596712b9a5a657a241ebab71c6a02913b0a8cee5a6a9",
         "affectsGlobalScope": false
       },

@@ -45,12 +45,16 @@ let InvestmentService = class InvestmentService {
                     error: 'Cannot invest more than available stock number',
                 };
             }
-            const associateTokenResult = await this.htsService.assoicateHtsToken(music.token.htsTokenId, user.htsAccountId, user.privateKey);
-            if (!associateTokenResult.ok) {
-                return {
-                    ok: false,
-                    error: associateTokenResult.error,
-                };
+            const userInvestments = user.investments;
+            const existingInvestment = userInvestments.find(i => i.music.id === music.id);
+            if (!existingInvestment) {
+                const associateTokenResult = await this.htsService.assoicateHtsToken(music.token.htsTokenId, user.htsAccountId, user.privateKey);
+                if (!associateTokenResult.ok) {
+                    return {
+                        ok: false,
+                        error: associateTokenResult.error,
+                    };
+                }
             }
             const transferTokenResult = await this.htsService.transferHtsToken(music.token.htsTokenId, user.htsAccountId, createInvestmentInput.amount);
             if (!transferTokenResult.ok) {
@@ -66,12 +70,18 @@ let InvestmentService = class InvestmentService {
                     error: transferHbarResult.error,
                 };
             }
-            await this.investmentRepository.save(this.investmentRepository.create({
-                user,
-                music,
-                amount: createInvestmentInput.amount,
-                price: music.token.initialPrice,
-            }));
+            if (existingInvestment) {
+                existingInvestment.amount += createInvestmentInput.amount;
+                await this.investmentRepository.save(existingInvestment);
+            }
+            else {
+                await this.investmentRepository.save(this.investmentRepository.create({
+                    user,
+                    music,
+                    amount: createInvestmentInput.amount,
+                    price: music.token.initialPrice,
+                }));
+            }
             const leftStock = music.token.stock - createInvestmentInput.amount;
             await this.tokenService.updateToken({
                 tokenId: music.token.id,

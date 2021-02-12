@@ -103,7 +103,8 @@ let MusicService = class MusicService {
             const musics = await this.musicRepository.find({
                 relations: ['token'],
             });
-            const sorted = musics.sort((m1, m2) => m1.token.stock - m2.token.stock);
+            const sorted = musics.sort((m1, m2) => m1.token.stock / m1.token.totalStock -
+                m2.token.stock / m2.token.totalStock);
             return {
                 ok: true,
                 musics: sorted.slice(0, 3),
