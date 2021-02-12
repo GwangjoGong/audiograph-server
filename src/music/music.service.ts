@@ -114,7 +114,11 @@ export class MusicService {
         relations: ['token'],
       });
 
-      const sorted = musics.sort((m1, m2) => m1.token.stock - m2.token.stock);
+      const sorted = musics.sort(
+        (m1, m2) =>
+          m1.token.stock / m1.token.totalStock -
+          m2.token.stock / m2.token.totalStock,
+      );
 
       return {
         ok: true,
